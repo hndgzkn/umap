@@ -1024,20 +1024,20 @@ def optimize_layout_aligned_euclidean(
     dim = head_embeddings[0].shape[1]
     alpha = initial_alpha
 
-    epochs_per_negative_sample = numba.typed.List.empty_list(numba.types.float32[::1])
+    epochs_per_negative_sample = numba.typed.List.empty_list(numba.types.float64[::1])
     epoch_of_next_negative_sample = numba.typed.List.empty_list(
-        numba.types.float32[::1]
+        numba.types.float64[::1]
     )
-    epoch_of_next_sample = numba.typed.List.empty_list(numba.types.float32[::1])
+    epoch_of_next_sample = numba.typed.List.empty_list(numba.types.float64[::1])
 
     for m in range(len(heads)):
         epochs_per_negative_sample.append(
-            epochs_per_sample[m].astype(np.float32) / negative_sample_rate
+            epochs_per_sample[m].astype(np.float64) / negative_sample_rate
         )
         epoch_of_next_negative_sample.append(
-            epochs_per_negative_sample[m].astype(np.float32)
+            epochs_per_negative_sample[m].astype(np.float64)
         )
-        epoch_of_next_sample.append(epochs_per_sample[m].astype(np.float32))
+        epoch_of_next_sample.append(epochs_per_sample[m].astype(np.float64))
 
     optimize_fn = numba.njit(
         _optimize_layout_aligned_euclidean_single_epoch,
